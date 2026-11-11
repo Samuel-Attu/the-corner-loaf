@@ -208,14 +208,19 @@
   var navigationEntry = performance.getEntriesByType('navigation')[0];
   if (!navigationEntry || navigationEntry.type !== 'reload') return;
 
-  window.addEventListener('pageshow', function () {
-    if (window.location.hash) {
-      window.history.replaceState(
-        window.history.state,
-        '',
-        window.location.pathname + window.location.search
-      );
-    }
-    window.scrollTo(0, 0);
+  window.history.scrollRestoration = 'manual';
+  if (window.location.hash) {
+    window.history.replaceState(
+      window.history.state,
+      '',
+      window.location.pathname + window.location.search
+    );
+  }
+
+  window.addEventListener('pageshow', function (event) {
+    if (event.persisted) return;
+    window.requestAnimationFrame(function () {
+      window.scrollTo(0, 0);
+    });
   });
 })();
