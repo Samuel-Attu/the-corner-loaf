@@ -76,18 +76,6 @@ a { color: var(--crust); text-underline-offset: 0.2em; }
 a:hover { color: var(--crust-dark); }
 :focus-visible { outline: 3px solid var(--crust); outline-offset: 3px; }
 
-.skip-link {
-  position: absolute;
-  z-index: 10;
-  top: -4rem;
-  left: var(--space-4);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius);
-  background: var(--ink);
-  color: var(--chalk);
-}
-.skip-link:focus { top: var(--space-2); }
-
 address { font-style: normal; }
 details > summary { list-style: none; }
 details > summary::-webkit-details-marker { display: none; }
@@ -442,7 +430,7 @@ section { padding-block: var(--space-12); }
   cursor: pointer;
 }
 
-/* by ME */
+/* Pre-order FAQ answers */
 .faq details p { margin: 0 0 var(--space-4);
   font-style: italic;
   font-weight: 400;
