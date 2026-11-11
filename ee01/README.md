@@ -219,8 +219,6 @@ I checked the original at phone width and in a narrowed window. Each point gives
 
 ---
 
-## 6. Publishing with GitHub Pages
+## 6. Live website
 
-The site is deployed from `ee01/` by the GitHub Actions workflow at `../.github/workflows/pages.yml`. In the repository settings, open **Pages** and set the build and deployment source to **GitHub Actions**. The workflow deploys automatically whenever changes are pushed to `main`; it can also be started manually from the **Actions** tab.
-
-After the first successful deployment, the site will be available at <https://samuel-attu.github.io/the-corner-loaf/>.
+The finished website is published on GitHub Pages: [View The Corner Loaf](https://samuel-attu.github.io/the-corner-loaf/).
