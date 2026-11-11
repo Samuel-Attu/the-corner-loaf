@@ -1,6 +1,6 @@
 # The Corner Loaf: website redesign
 
-A mobile-first rebuild of the website for The Corner Loaf, a neighbourhood bakery on Boundary Road, East Legon, Accra. Plain HTML, CSS and a small amount of JavaScript. No framework, no backend.
+A mobile-first rebuild of the website for The Corner Loaf, a neighbourhood bakery on Boundary Road, East Legon, Accra. Plain HTML, CSS and JavaScript. No framework, no backend.
 
 ```
 index.html
@@ -8,6 +8,7 @@ css/styles.css
 js/script.js
 docs/sketch/The Corner Loaf sketch.drawio.svg
 docs/screenshots/
+README.md
 ```
 
 ## Visual assets
@@ -214,7 +215,6 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - *For Marcus:* orders arrive in WhatsApp, where he already talks to customers, and they say which item and which day, so there is less back and forth. It also needs no server, nothing to maintain and nothing that can break.
 
 **Limits I chose to accept.**
-- It needs WhatsApp. Email stays on the page as a fallback, but there is no SMS option.
 - One message per item, so a customer ordering three things sends three messages. That is acceptable for a bakery this size.
 
 ---
