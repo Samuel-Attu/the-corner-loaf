@@ -216,3 +216,11 @@ I checked the original at phone width and in a narrowed window. Each point gives
 **Limits I chose to accept.**
 - It needs WhatsApp. Email stays on the page as a fallback, but there is no SMS option.
 - One message per item, so a customer ordering three things sends three messages. That is acceptable for a bakery this size.
+
+---
+
+## 6. Publishing with GitHub Pages
+
+The site is deployed from `ee01/` by the GitHub Actions workflow at `../.github/workflows/pages.yml`. In the repository settings, open **Pages** and set the build and deployment source to **GitHub Actions**. The workflow deploys automatically whenever changes are pushed to `main`; it can also be started manually from the **Actions** tab.
+
+After the first successful deployment, the site will be available at <https://samuel-attu.github.io/the-corner-loaf/>.
