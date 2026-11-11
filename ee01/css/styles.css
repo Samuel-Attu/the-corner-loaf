@@ -47,7 +47,10 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  * { transition: none !important; }
+  .menu-icon span,
+  details > summary::after,
+  .btn,
+  .day-jump a { transition: none !important; }
 }
 
 body {
@@ -74,6 +77,18 @@ p { margin: 0 0 var(--space-4); max-width: 65ch; }
 a { color: var(--crust); text-underline-offset: 0.2em; }
 a:hover { color: var(--crust-dark); }
 :focus-visible { outline: 3px solid var(--crust); outline-offset: 3px; }
+
+.skip-link {
+  position: absolute;
+  z-index: 10;
+  top: -4rem;
+  left: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--chalk);
+}
+.skip-link:focus { top: var(--space-2); }
 
 address { font-style: normal; }
 details > summary { list-style: none; }
@@ -124,7 +139,9 @@ section { padding-block: var(--space-12); }
 .nav-list a {
   display: inline-flex;
   align-items: center;
+  min-width: var(--tap);
   min-height: var(--tap);
+  padding-inline: var(--space-2);
   color: var(--ink);
   font-weight: 500;
 }
@@ -275,6 +292,10 @@ section { padding-block: var(--space-12); }
   margin: 0;
   font-size: var(--step-2);
   font-weight: 600;
+}
+.today-summary {
+  grid-column: 1;
+  margin-bottom: 0;
 }
 .today .menu-list {
   grid-column: 1;

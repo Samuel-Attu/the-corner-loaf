@@ -8,4 +8,4 @@ A website for The Corner Loaf, a neighbourhood bakery on Boundary Road, East Leg
 |---|---|---|
 | EE01, Lab 1 | [`ee01/`](ee01/) | Redesign and semantic rebuild of the original site. Sketch, diagnosis, audit and improvement are in the [EE01 README](ee01/README.md). |
 
-The live site is deployed from the latest module folder by GitHub Actions on every push to `main`.
+The live site is deployed from the latest module folder by GitHub Actions on every push to `main`, using the [Pages workflow](.github/workflows/pages.yml).

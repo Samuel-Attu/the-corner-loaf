@@ -113,7 +113,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 | `--chalk` | `#f4ead8` | Text on the chalkboard |
 | `--open` | `#2f6b3a` | The "open now" dot, always next to the word Open |
 
-**Type.** Poppins at weights 400, 500 and 600, with system fallbacks. A 1.25 scale from 16px: 0.8, 1, 1.25 and 1.563rem, plus a fluid size for the `h1`. Everything is in `rem`.
+**Type.** Poppins at weights 400, 500 and 600, loaded from Google Fonts with system fallbacks. A 1.25 scale from 16px: 0.8, 1, 1.25 and 1.563rem, plus a fluid size for the `h1`. Everything is in `rem`.
 
 **Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2, 3 and 4rem, used for every margin and padding. Tap targets are at least 44px.
 
@@ -175,7 +175,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - Status is never colour alone: the dot always sits next to the words "Open now" or "Closed now".
 - Tap targets are at least 44px. Focus outlines are visible, and reduced motion is respected.
 - I tabbed through the whole page with the keyboard and could reach all of it.
-- The 16 pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.
+- The 16 weekly-menu pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.
 
 <img src="docs/screenshots/iphone16-nav-toggle-on.png" alt="The rebuilt site on an iPhone 16 with the navigation toggle open, showing Menu, Pre-order and Contact" width="260">
 
@@ -196,7 +196,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - The FAQ answers use Poppins 400 italic, which is now loaded, so the browser no longer fakes the italic.
 
 **Known gaps**
-- I added a skip link and removed it later. The header has only three links, so a keyboard user reaches the content in two to four Tab presses, and the labelled landmarks (`header`, `nav`, `main`) let screen reader users jump past the header. For a page this small it would add an element that few people need.
+- A visible-on-focus skip link lets keyboard users bypass the header and go directly to the main content.
 - The open or closed status comes from the weekly schedule. It cannot know if something has sold out, so it does not promise stock.
 - Automated tools only catch part of the accessibility problems, and I have not tested with a screen reader. The contrast figures above are calculated from the tokens, and the tools found no contrast failures.
 
@@ -206,7 +206,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 
 **The gap.** The original pre-order form sent nothing, and it asked a phone user to retype the item they were already looking at. Marcus could lose orders without knowing.
 
-**What I built.** Every item in the weekly menu, and in the today panel, has a Pre-order button. It opens WhatsApp with a message already written, for example "Hi Marcus, I'd like to pre-order a Sourdough loaf for Tuesday." The customer taps send. There is no form, no typing, and the order reaches Marcus on the app he already checks.
+**What I built.** Every item in the weekly menu has a Pre-order button. It opens WhatsApp with a message already written, for example "Hi Marcus, I'd like to pre-order a Sourdough loaf for Tuesday." The today panel gives a short summary and links directly to that day's menu, where customers can pre-order. There is no form, no typing, and the order reaches Marcus on the app he already checks.
 
 <img src="docs/screenshots/iphone16-pre-order-and-about.png" alt="The rebuilt site on an iPhone 16: the Pre-order section with a WhatsApp button and the FAQ, followed by About" width="260">
 
