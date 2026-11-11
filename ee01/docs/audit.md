@@ -21,7 +21,7 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 - Wheat is used only on the dark board. On flour it would be 1.7:1.
 - The dotted leaders are 3.7:1, but they are decorative and hidden from screen readers.
 - Status is never colour alone: the dot always sits next to words describing whether the bakery is open or closed.
-- Tap targets are at least 44px. Focus outlines are visible, and reduced motion is respected.
+- Primary navigation, menu and order controls are at least 44px. Some inline links, including the skip link and contact links, are smaller. Focus outlines are visible, and reduced motion is respected.
 - The skip link lets keyboard users bypass the header and go directly to the main content.
 - The 16 weekly-menu pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.
 
@@ -31,7 +31,7 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 
 ## Automated checks
 
-- Lighthouse (mobile, run through Live Server): Performance 98, Accessibility 100, Best Practices 100, SEO 100. axe DevTools (WCAG 2.1 AA) found 0 issues.
+- Lighthouse (mobile, run through Live Server): Performance 99, Accessibility 100, Best Practices 100, SEO 100. axe DevTools (WCAG 2.1 AA) found 0 issues.
 
 <img src="screenshots/lighthouse-results.png" alt="Lighthouse test results" width="300">
 

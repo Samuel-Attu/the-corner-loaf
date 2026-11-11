@@ -15,7 +15,7 @@ Every item in the weekly menu has a Pre-order button. It opens WhatsApp with a m
 ## Why it matters
 
 - *For customers:* the person deciding what to buy turns that into an order in two taps, with the item and day already filled in.
-- *For Marcus:* orders arrive in WhatsApp, where he already talks to customers, and they say which item and which day, so there is less back and forth. It also needs no server, nothing to maintain and nothing that can break.
+- *For Marcus:* orders arrive in WhatsApp, where he already talks to customers, and they say which item and which day, so there is less back and forth. It needs no custom server to maintain, though it depends on WhatsApp and the contact number staying current.
 
 ## Limits I chose to accept
 
