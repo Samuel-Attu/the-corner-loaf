@@ -203,3 +203,19 @@
   update();
   startUpdates();
 })();
+
+(function resetScrollOnRefresh() {
+  var navigationEntry = performance.getEntriesByType('navigation')[0];
+  if (!navigationEntry || navigationEntry.type !== 'reload') return;
+
+  window.addEventListener('pageshow', function () {
+    if (window.location.hash) {
+      window.history.replaceState(
+        window.history.state,
+        '',
+        window.location.pathname + window.location.search
+      );
+    }
+    window.scrollTo(0, 0);
+  });
+})();
