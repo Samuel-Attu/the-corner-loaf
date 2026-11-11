@@ -80,12 +80,6 @@
     return node;
   }
 
-  function joinItemNames(names) {
-    if (names.length < 2) return names[0] || '';
-    if (names.length === 2) return names[0] + ' and ' + names[1];
-    return names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
-  }
-
   function render(state) {
     var section = state.day === undefined ? null : document.getElementById(DAY_IDS[state.day]);
     var menuList = section && section.querySelector('.menu-list');
@@ -94,7 +88,6 @@
     var strong = createElement('strong');
     var detail = '';
     var title;
-    var availabilityLabel = 'Available today: ';
     var menuLinkText;
 
     status.setAttribute('role', 'status');
@@ -119,7 +112,6 @@
       var when = state.daysAhead === 1 ? 'tomorrow' : DAY_NAMES[state.day];
       detail = 'We reopen ' + when + ' at ' + formatHour(state.opens) + '.';
       title = (state.daysAhead === 1 ? "Tomorrow's" : DAY_NAMES[state.day] + "'s") + ' bakes';
-      availabilityLabel = 'Available ' + when + ': ';
       menuLinkText = "View " + when + "'s menu and pre-order";
     } else {
       status.className += ' is-closed';
@@ -140,13 +132,15 @@
       var itemNames = Array.prototype.map.call(menuList.querySelectorAll('.name'), function (item) {
         return item.textContent.trim();
       });
-      fragment.appendChild(createElement(
-        'p',
-        'today-summary',
-        itemNames.length
-          ? availabilityLabel + joinItemNames(itemNames) + '.'
-          : "Check the weekly menu for today's selection."
-      ));
+      if (itemNames.length) {
+        var itemList = createElement('ul', 'today-items');
+        itemNames.forEach(function (name) {
+          itemList.appendChild(createElement('li', '', name));
+        });
+        fragment.appendChild(itemList);
+      } else {
+        fragment.appendChild(createElement('p', 'note', "Check the weekly menu for today's selection."));
+      }
       if (note) fragment.appendChild(createElement('p', 'note', note.textContent));
     } else {
       fragment.appendChild(createElement('p', 'note', 'Check the weekly menu for the full selection.'));
