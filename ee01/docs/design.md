@@ -15,6 +15,7 @@
 | `--wheat` | `#ebb94f` | Prices and headings on the chalkboard only |
 | `--chalk` | `#f4ead8` | Text on the chalkboard |
 | `--open` | `#2f6b3a` | The "open now" dot, always next to the word Open |
+| `--shadow` | `rgb(46 29 18 / 12%)` | Navigation dropdown shadow |
 
 **Type.** Poppins at weights 400, 500 and 600, loaded from Google Fonts with system fallbacks. A 1.25 scale from 16px: 0.8, 1, 1.25 and 1.563rem, plus a fluid size for the `h1`. Everything is in `rem`.
 
