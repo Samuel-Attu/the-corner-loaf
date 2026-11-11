@@ -7,13 +7,14 @@ index.html
 css/styles.css
 js/script.js
 docs/sketch/The Corner Loaf sketch.drawio.svg
+docs/screenshots/
 ```
 
 ## Visual assets
 
 The design sketch is available at [The Corner Loaf sketch](docs/sketch/The%20Corner%20Loaf%20sketch.drawio.svg).
 
-Screenshots are in [`docs/screenshots/`](docs/screenshots/):
+The key screenshots appear inline below. The full set is in [`docs/screenshots/`](docs/screenshots/):
 
 - [320px first screen](docs/screenshots/320px-first-screen.png)
 - [Desktop first screen](docs/screenshots/desktop-first-screen.png)
@@ -52,9 +53,20 @@ The [sketch](docs/sketch/The%20Corner%20Loaf%20sketch.drawio.svg) shows the phon
 
 I checked the original at phone width and in a narrowed window. Each point gives the root cause and what it costs Marcus.
 
+<p>
+  <img src="docs/screenshots/iphone16-original-site.png" alt="The original site on an iPhone 16 view: the whole desktop layout is shrunk to fit and the text is tiny" width="260">
+  <img src="docs/screenshots/narrowed-desktop-window-top.png" alt="The original site in a narrowed desktop window: the nav is cut off at Contac and the hero title reads THE CORNE" width="260">
+</p>
+
+*Left: the original on an iPhone 16 view, shrunk to about 5px text. Right: the original in a narrow window, with the nav and hero cut off.*
+
 **1. Today's availability is hidden in a table sorted by item.**
 - *Root cause:* The table is organised the way Marcus thinks about his menu (item, then days). The visitor's question is the opposite (day, then items).
 - *Impact:* Marcus loses walk-by customers when they have to read six rows and filter by today's day in their head. In a narrow window the Price and Available columns fall off the right edge entirely.
+
+<img src="docs/screenshots/menu-item-prices-right-side.png" alt="The original menu table with the price and availability columns" width="320">
+
+*The price and availability columns, the part walk-by visitors need most.*
 
 **2. The page is not built for phones.**
 - *Root cause:* There is no viewport meta tag. The header, hero, wrapper and footer are fixed at 820px, the info boxes are floats, and there are no media queries.
@@ -75,6 +87,10 @@ I checked the original at phone width and in a narrowed window. Each point gives
 **6. There is no visual system, so it reads as a template.**
 - *Root cause:* Font sizes mix `pt` and `px` across about nine values, styles are inline, and the info boxes use orange, green and blue pastels unrelated to the brown palette. Blocks use different widths and padding without `box-sizing: border-box`, so the footer is narrower than the wrapper and the contact section sits outside it.
 - *Impact:* Marcus wants the site to feel like his warm, unfussy shop. A generic template does not.
+
+<img src="docs/screenshots/narrowed-desktop-window-bottom.png" alt="The bottom of the original site in a narrowed window: the Hours box is clipped, the contact form sits outside the wrapper and the inputs are tiny" width="320">
+
+*The bottom of the original: hours and address only appear here (point 3), the forms are tiny and send nothing (point 4), and the info boxes and contact form break the layout (point 6).*
 
 ---
 
@@ -98,15 +114,50 @@ I checked the original at phone width and in a narrowed window. Each point gives
 
 **Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2, 3 and 4rem, used for every margin and padding. Tap targets are at least 44px.
 
+**Live today panel.** A small script reads the weekly menu already in the HTML and shows the open or closed status plus the right day's items on the first screen. After closing it shows the next opening day's items. The menu is written once, so the panel can never disagree with it. Without JavaScript it falls back to a link to the weekly menu.
+
+<p>
+  <img src="docs/screenshots/iphone16-first-screen.png" alt="The rebuilt site on an iPhone 16: header, open status, today's bakes and the location on the first screen" width="260">
+  <img src="docs/screenshots/320px-first-screen.png" alt="The rebuilt site at 320px wide: the same first screen on the smallest phone width" width="220">
+</p>
+
+*The first screen on an iPhone 16 (left) and at 320px (right): status, today's bakes and location, with no scrolling.*
+
 **The chalkboard menu.** The weekly menu is a dark board with dotted price leaders, like a bakery price board. It is the one bold choice on the page, and it makes the menu feel like the shop and not like a template.
 
-**Live today panel.** A small script reads the weekly menu already in the HTML and shows the open or closed status plus the right day's items on the first screen. After closing it shows the next opening day's items. The menu is written once, so the panel can never disagree with it. Without JavaScript it falls back to a link to the weekly menu.
+<img src="docs/screenshots/iphone16-days-and-items-menu.png" alt="The weekly menu on an iPhone 16: a dark chalkboard with each day's items, prices and a Pre-order button" width="260">
+
+*The weekly menu on a phone, sorted by day, with a Pre-order button on each item.*
+
+<details>
+<summary>Desktop views</summary>
+
+<img src="docs/screenshots/desktop-first-screen.png" alt="The rebuilt site on desktop: first screen" width="640">
+
+*Desktop first screen.*
+
+<img src="docs/screenshots/desktop-items-menu.png" alt="The rebuilt site on desktop: the weekly menu" width="640">
+
+*Desktop weekly menu.*
+
+<img src="docs/screenshots/desktop-pre-order-and-about.png" alt="The rebuilt site on desktop: pre-order section and About" width="640">
+
+*Desktop pre-order and About.*
+
+<img src="docs/screenshots/desktop-about-hours-contact-footer.png" alt="The rebuilt site on desktop: About, hours, contact and footer" width="640">
+
+*Desktop About, hours, contact and footer.*
+
+</details>
 
 ---
 
 ## 4. Audit of the finished page
 
 **What I prioritised, and why.** Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no time to maintain a site, and no backend. So I put the first-screen answer first, then phone usability, then semantics and accessibility, then visual consistency. A technically perfect page that hid the day's bread would have failed the brief.
+
+**Responsive**
+- I checked the page at 320px, on an iPhone 16 view and on desktop (screenshots in section 3 and the full set above). At all three there is no sideways scrolling. The layout is mobile-first CSS that wraps by itself, with no fixed widths, which fixes the 820px layout that caused the original's problems.
 
 **Semantic HTML**
 - One `h1`, with `h2` for sections and `h3` for days. No skipped levels.
@@ -121,7 +172,21 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - Status is never colour alone: the dot always sits next to the words "Open now" or "Closed now".
 - Tap targets are at least 44px. Focus outlines are visible, and reduced motion is respected.
 - A skip link at the top of the page lets keyboard users jump past the header and nav to the content.
+- I tabbed through the whole page with the keyboard and could reach all of it.
 - The 16 pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.
+
+<img src="docs/screenshots/iphone16-nav-toggle-on.png" alt="The rebuilt site on an iPhone 16 with the navigation toggle open, showing Menu, Pre-order and Contact" width="260">
+
+*The mobile navigation toggle open, with large tap targets.*
+
+**Automated checks**
+- Lighthouse (mobile, run through Live Server): Performance 98, Accessibility 100, Best Practices 100, SEO 100. axe DevTools (WCAG 2.1 AA) found 0 issues.
+
+<img src="docs/screenshots/lighthouse-results.png" alt="Lighthouse test results" width="300">
+
+*Lighthouse tests results (mobile)*
+
+- Two fixes came out of the Lighthouse run. A missing favicon caused a console error (Best Practices 96), so I added an inline icon. The today panel grew when the script filled it, which pushed the location down the page (layout shift 0.28 and Performance 85), so I now reserve space for the panel. A page that jumps while someone is looking for the hours is a real problem for a walk-by visitor, not just a score.
 
 **Visual consistency**
 - Every colour, type size and spacing value outside `:root` comes from the tokens. I found six hard-coded colours in the open/closed status box and replaced them with tokens, and the status states now differ only by the colour of the left edge and the words.
@@ -130,7 +195,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 
 **Known gaps**
 - The open or closed status comes from the weekly schedule. It cannot know if something has sold out, so it does not promise stock.
-- I have not run Lighthouse, axe or a screen reader on the finished page. The contrast figures above are calculated, not measured by a tool.
+- Automated tools only catch part of the accessibility problems, and I have not tested with a screen reader. The contrast figures above are calculated from the tokens, and the tools found no contrast failures.
 
 ---
 
@@ -139,6 +204,10 @@ I checked the original at phone width and in a narrowed window. Each point gives
 **The gap.** The original pre-order form sent nothing, and it asked a phone user to retype the item they were already looking at. Marcus could lose orders without knowing.
 
 **What I built.** Every item in the weekly menu, and in the today panel, has a Pre-order button. It opens WhatsApp with a message already written, for example "Hi Marcus, I'd like to pre-order a Sourdough loaf for Tuesday." The customer taps send. There is no form, no typing, and the order reaches Marcus on the app he already checks.
+
+<img src="docs/screenshots/iphone16-pre-order-and-about.png" alt="The rebuilt site on an iPhone 16: the Pre-order section with a WhatsApp button and the FAQ, followed by About" width="260">
+
+*The pre-order section on a phone, with the WhatsApp button and the FAQ.*
 
 **Why it matters.**
 - *For customers:* the person deciding what to buy turns that into an order in two taps, with the item and day already filled in.
