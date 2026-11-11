@@ -113,6 +113,8 @@ section { padding-block: var(--space-12); }
 .site-header {
   background: var(--flour);
   border-bottom: 4px solid var(--kraft);
+  position: sticky;
+  top: 0;
 }
 .header-inner {
   display: flex;
