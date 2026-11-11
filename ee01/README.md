@@ -186,7 +186,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 
 <img src="docs/screenshots/lighthouse-results.png" alt="Lighthouse test results" width="300">
 
-*Lighthouse tests results (mobile)*
+*Lighthouse test results (mobile)*
 
 - Two fixes came out of the Lighthouse run. A missing favicon caused a console error (Best Practices 96), so I added an inline icon. The today panel grew when the script filled it, which pushed the location down the page (layout shift 0.28 and Performance 85), so I now reserve space for the panel. A page that jumps while someone is looking for the hours is a real problem for a walk-by visitor, not just a score.
 
