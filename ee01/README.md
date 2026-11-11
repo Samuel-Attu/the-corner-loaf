@@ -38,6 +38,8 @@ The key screenshots appear inline below. The full set is in [`docs/screenshots/`
 
 The [sketch](docs/sketch/The%20Corner%20Loaf%20sketch.drawio.svg) shows the phone layout from top to bottom.
 
+**When it was made.** I finished the sketch on 10 November at 9:48 am, and my first commit was at 10:06 am the same morning. The sketch was added to the repository later, with this README, which is why the commit history shows it after the code.
+
 **Why the page is ordered this way.** Marcus's regulars check the site on their phones while walking past. They are asking three questions, in this order: is it open, what is out today, and where is it. The page answers them in that order, on the first screen. Everything for people planning ahead (the weekly menu, pre-ordering, the FAQ) comes after, because those visitors are willing to scroll and walk-by customers are not.
 
 - **Status and today's bakes are one block.** They answer one question, so they sit together at the top. When the shop is closed, the block says when it opens next and shows what is baking then.
@@ -46,7 +48,7 @@ The [sketch](docs/sketch/The%20Corner%20Loaf%20sketch.drawio.svg) shows the phon
 - **The weekly menu is organised by day,** not by item, because "what can I get on Tuesday?" is the question people ask.
 - **About Marcus, then hours and contact, come last.** They give new visitors the small, real feel of the shop, but a regular does not need them to decide.
 
-**What changed between the sketch and the build.** My sketch still had a pre-order form and a "Send us a message" form. I removed both in the build. The original forms never sent anything, and a form means typing on a phone, which is the biggest cost for someone mid-walk. Pre-ordering now happens on the item itself (see section 5), and contact is WhatsApp and email. I also dropped the separate description block, since the `h1` does that job.
+**What changed between the sketch and the build.** My sketch still had a pre-order form and a "Send us a message" form. I removed both in the build. The original forms meant typing on a phone, which is the biggest cost for someone mid-walk. Pre-ordering now happens on the item itself (see section 5), and contact is WhatsApp and email. I also dropped the separate description block, since the `h1` does that job.
 
 ---
 
@@ -172,7 +174,6 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - The dotted leaders are 3.7:1, but they are decorative and hidden from screen readers.
 - Status is never colour alone: the dot always sits next to the words "Open now" or "Closed now".
 - Tap targets are at least 44px. Focus outlines are visible, and reduced motion is respected.
-- A skip link at the top of the page lets keyboard users jump past the header and nav to the content.
 - I tabbed through the whole page with the keyboard and could reach all of it.
 - The 16 pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.
 
@@ -195,6 +196,7 @@ I checked the original at phone width and in a narrowed window. Each point gives
 - The FAQ answers use Poppins 400 italic, which is now loaded, so the browser no longer fakes the italic.
 
 **Known gaps**
+- I added a skip link and removed it later. The header has only three links, so a keyboard user reaches the content in two to four Tab presses, and the labelled landmarks (`header`, `nav`, `main`) let screen reader users jump past the header. For a page this small it would add an element that few people need.
 - The open or closed status comes from the weekly schedule. It cannot know if something has sold out, so it does not promise stock.
 - Automated tools only catch part of the accessibility problems, and I have not tested with a screen reader. The contrast figures above are calculated from the tokens, and the tools found no contrast failures.
 
