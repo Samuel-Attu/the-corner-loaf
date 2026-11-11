@@ -442,7 +442,7 @@ section { padding-block: var(--space-12); }
 /* Contact */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: var(--space-8);
 }
 .contact h3 { margin-top: var(--space-6); font-size: var(--step-0); }
