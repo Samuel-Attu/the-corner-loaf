@@ -14,6 +14,7 @@
   --chalk: #f4ead8;      /* text on the chalkboard */
   --chalk-dim: #8a7461;  /* dotted leaders */
   --open: #2f6b3a;       /* "open now" dot, always paired with the word Open */
+  --shadow: rgb(46 29 18 / 12%); /* navigation dropdown shadow */
 
   /* Type: Poppins, scale of 1.25 from 16px */
   --font: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -190,7 +191,7 @@ section { padding-block: var(--space-12); }
     width: min(20rem, 100%);
     background: var(--flour);
     border: 1px solid var(--kraft);
-    box-shadow: 0 0.5rem 1.25rem rgb(46 29 18 / 12%);
+    box-shadow: 0 0.5rem 1.25rem var(--shadow);
   }
   .nav-list { flex-direction: column; gap: 0; padding: var(--space-2); }
   .nav-list li + li { border-top: 1px solid var(--kraft-tint); }

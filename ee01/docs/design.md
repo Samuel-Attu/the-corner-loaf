@@ -18,7 +18,7 @@
 
 **Type.** Poppins at weights 400, 500 and 600, loaded from Google Fonts with system fallbacks. A 1.25 scale from 16px: 0.8, 1, 1.25 and 1.563rem, plus a fluid size for the `h1`. Everything is in `rem`.
 
-**Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2, 3 and 4rem, used for every margin and padding. Tap targets are at least 44px.
+**Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2, 3 and 4rem, used for every margin and padding. Primary navigation, menu and order controls are at least 44px; some inline links are smaller, as noted in the audit.
 
 ## Live today panel
 
