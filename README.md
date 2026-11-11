@@ -1,11 +1,25 @@
 # The Corner Loaf
 
-A website for The Corner Loaf, a neighbourhood bakery on Boundary Road, East Legon, Accra. The project is built up module by module. Each module has its own folder, and the next one continues from where the last one ended.
+A mobile-first redesign of a neighbourhood bakery website in East Legon, Accra, built as **EE01, Lab 1**. The project uses plain HTML, CSS, and JavaScript, with no framework or backend.
 
-**Live site:** [samuel-attu.github.io/the-corner-loaf](https://samuel-attu.github.io/the-corner-loaf/)
+**Live website:** [The Corner Loaf on GitHub Pages](https://samuel-attu.github.io/the-corner-loaf/)
 
-| Module | Folder | What it covers |
-|---|---|---|
-| EE01, Lab 1 | [`ee01/`](ee01/) | Redesign and semantic rebuild of the original site. Sketch, diagnosis, audit and improvement are in the [EE01 README](ee01/README.md). |
+## EE01 lab write-ups
 
-The live site is deployed from the latest module folder by GitHub Actions on every push to `main`, using the [Pages workflow](.github/workflows/pages.yml).
+- [Sketch and structure note](ee01/docs/sketch.md)
+- [Diagnosis of the original site](ee01/docs/diagnosis.md)
+- [Rebuild and design decisions](ee01/docs/design.md)
+- [Audit of the finished page](ee01/docs/audit.md)
+- [One-tap pre-order improvement](ee01/docs/improvement.md)
+- [Live site and deployment](ee01/docs/live-site.md)
+
+The [design assets](ee01/docs/) include the original sketch and responsive screenshots.
+
+## Project files
+
+- [Page markup](ee01/index.html)
+- [Stylesheet](ee01/css/styles.css)
+- [Today panel and navigation script](ee01/js/script.js)
+- [GitHub Pages workflow](.github/workflows/pages.yml)
+
+The site deploys from `ee01/` with GitHub Actions whenever changes are pushed to `main`.
