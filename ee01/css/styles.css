@@ -32,7 +32,6 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --space-12: 3rem;
-  --space-16: 4rem;
 
   --radius: 6px;
   --tap: 2.75rem; /* 44px minimum touch target */
@@ -303,14 +302,6 @@ section { padding-block: var(--space-12); }
   margin: 0;
   padding-left: var(--space-6);
 }
-.today .menu-list {
-  grid-column: 1;
-  grid-row: auto;
-  align-self: start;
-}
-.today .menu-list li { padding-block: var(--space-2); }
-.today .dots { border-color: var(--kraft); }
-.today .price { color: var(--crust); }
 .today .note {
   grid-column: 1;
   margin-top: var(--space-2);
@@ -335,8 +326,6 @@ section { padding-block: var(--space-12); }
 
 @media (max-width: 40rem) {
   .today { width: 100%; }
-  .today .menu-list { margin-top: var(--space-2); }
-  .today .menu-list li { padding-block: var(--space-1); }
   .today-more { margin-top: var(--space-2); }
 }
 
@@ -422,9 +411,6 @@ section { padding-block: var(--space-12); }
   white-space: nowrap;
 }
 .order-link:hover { border-color: var(--wheat); background: var(--wheat); color: var(--ink); }
-.today .item-copy { flex-wrap: wrap; }
-.today .order-link { border-color: var(--kraft); color: var(--crust); }
-.today .order-link:hover { border-color: var(--crust); background: var(--crust); color: var(--flour); }
 .note {
   margin: var(--space-3) 0 0;
   font-size: var(--step-0);

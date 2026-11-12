@@ -6,7 +6,7 @@ The original pre-order form sent nothing, and it asked a phone user to retype th
 
 ## What I built
 
-Every item in the weekly menu has a Pre-order button. It opens WhatsApp with a message already written, for example "Hi Marcus, I'd like to pre-order a Sourdough loaf for Tuesday." The today panel shows a compact list of available bakes and links directly to that day's menu, where customers can pre-order. There is no form, no typing, and the order reaches Marcus on the app he already checks.
+Every item in the weekly menu has a Pre-order button. It opens WhatsApp with a message already written, for example "Hi Marcus, I'd like to pre-order a Sourdough loaf for Tuesday." The today panel shows a compact list of that day's bakes and links directly to that day's menu, where customers can pre-order. There is no form, no typing, and the order reaches Marcus on the app he already checks.
 
 <img src="screenshots/iphone16-pre-order-and-about.png" alt="The rebuilt site on an iPhone 16: the Pre-order section with a WhatsApp button and the FAQ, followed by About" width="260">
 

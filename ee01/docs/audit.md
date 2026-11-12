@@ -20,7 +20,7 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 - Text contrast, calculated from the tokens, passes AA: ink on flour 15.2:1, secondary text on flour 6.8:1, links and buttons 7.8:1, chalk on ink 13.5:1, wheat on ink 8.9:1, crust on kraft-tint 6.6:1.
 - Wheat is used only on the dark board. On flour it would be 1.7:1.
 - The dotted leaders are 3.7:1, but they are decorative and hidden from screen readers.
-- Status is never colour alone: the dot always sits next to words describing whether the bakery is open or closed.
+- Status is never colour alone: the dot always sits next to words describing whether the bakery is open or closed. The [live-panel screenshots](design.md#live-today-panel) show the open state and both closed-state transitions.
 - Primary navigation, menu and order controls are at least 44px. Some inline links, including the skip link and contact links, are smaller. Focus outlines are visible, and reduced motion is respected.
 - The skip link lets keyboard users bypass the header and go directly to the main content.
 - The 16 weekly-menu pre-order links each have a distinct accessible name, for example "Pre-order sourdough loaf for Tuesday on WhatsApp", and the visible text is part of that name.

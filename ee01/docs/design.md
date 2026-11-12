@@ -19,7 +19,7 @@
 
 **Type.** Poppins at weights 400, 500 and 600, loaded from Google Fonts with system fallbacks. A 1.25 scale from 16px: 0.8, 1, 1.25 and 1.563rem, plus a fluid size for the `h1`. Everything is in `rem`.
 
-**Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2, 3 and 4rem, used for every margin and padding. Primary navigation, menu and order controls are at least 44px; some inline links are smaller, as noted in the audit.
+**Spacing.** A 4px base: 0.25, 0.5, 0.75, 1, 1.5, 2 and 3rem, used for every margin and padding. Primary navigation, menu and order controls are at least 44px; some inline links are smaller, as noted in the audit.
 
 ## Live today panel
 
@@ -31,6 +31,20 @@ A small script reads the weekly menu already in the HTML and shows the open or c
 </p>
 
 *The first screen on an iPhone 16 (left) and at 320px (right): status, today's bakes and location, with no scrolling.*
+
+The panel follows the weekly schedule: while open on Friday it shows Friday's bakes; after closing, it switches to Saturday's opening time and menu. On Sunday, it looks ahead to Monday instead.
+
+<img src="screenshots/iphone16-friday-open.png" alt="The rebuilt site on Friday while the bakery is open: today's bakes and the 5pm closing time" width="260">
+
+*Friday while open: today's bakes and closing time.*
+
+<img src="screenshots/iphone16-friday-closed.png" alt="The rebuilt site after closing on Friday: it says the bakery reopens Saturday at 7am and shows Saturday's bakes" width="260">
+
+*After Friday's close: the panel looks ahead to Saturday.*
+
+<img src="screenshots/iphone16-bakery-closed.png" alt="The rebuilt site while the bakery is closed on Sunday: it says it reopens Monday at 7am and shows Monday's bakes" width="260">
+
+*Sunday while closed: the panel looks ahead to Monday.*
 
 ## The chalkboard menu
 
