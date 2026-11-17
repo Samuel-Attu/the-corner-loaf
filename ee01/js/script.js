@@ -1,17 +1,68 @@
-// The Corner Loaf: responsive navigation and live opening-hours panel.
+// The Corner Loaf: responsive navigation, live opening-hours panel, slideshow, autofill forms, and scroll reveal.
+
+(function initializeScrollReveal() {
+  var elements = document.querySelectorAll('[data-reveal]');
+  if (!elements.length) return;
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reducedMotion.matches || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].classList.add('is-visible');
+    }
+    return;
+  }
+
+  document.documentElement.classList.add('js-ready');
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -24px 0px'
+  });
+
+  elements.forEach(function (el) {
+    observer.observe(el);
+  });
+})();
 
 (function initializeNavigation() {
+  var siteHeader = document.querySelector('.site-header');
   var menuToggle = document.querySelector('.menu-toggle');
   var navigation = document.getElementById('primary-navigation');
   if (!menuToggle || !navigation) return;
 
   // Keep this breakpoint in sync with the navigation media query in styles.css.
-  var mobileNavigation = window.matchMedia('(max-width: 40rem)');
+  var mobileNavigation = window.matchMedia('(max-width: 44rem)');
+
+  function syncHeaderOffset() {
+    if (!siteHeader) return;
+    var height = siteHeader.offsetHeight;
+    if (height > 0) {
+      document.documentElement.style.setProperty('--header-offset', (height + 16) + 'px');
+    }
+  }
 
   function setNavigationMode() {
     var isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
     menuToggle.hidden = !mobileNavigation.matches;
     navigation.hidden = mobileNavigation.matches && !isExpanded;
+    syncHeaderOffset();
+  }
+
+  function closeMobileMenu(restoreFocus) {
+    if (!mobileNavigation.matches) return;
+    if (menuToggle.getAttribute('aria-expanded') !== 'true') return;
+    menuToggle.setAttribute('aria-expanded', 'false');
+    navigation.hidden = true;
+    if (restoreFocus) {
+      menuToggle.focus();
+    }
   }
 
   menuToggle.addEventListener('click', function () {
@@ -22,13 +73,114 @@
 
   navigation.addEventListener('click', function (event) {
     if (event.target.closest('a') && mobileNavigation.matches) {
-      menuToggle.setAttribute('aria-expanded', 'false');
-      navigation.hidden = true;
+      closeMobileMenu(false);
+    }
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      closeMobileMenu(true);
     }
   });
 
   mobileNavigation.addEventListener('change', setNavigationMode);
+  window.addEventListener('resize', syncHeaderOffset);
   setNavigationMode();
+})();
+
+(function initializeBakeCarousel() {
+  var carousel = document.getElementById('bake-carousel');
+  var prevBtn = document.getElementById('carousel-prev');
+  var nextBtn = document.getElementById('carousel-next');
+  var dotsContainer = document.getElementById('carousel-dots');
+  if (!carousel || !prevBtn || !nextBtn) return;
+
+  var slides = carousel.querySelectorAll('[data-slide]');
+  var dots = dotsContainer ? dotsContainer.querySelectorAll('[data-slide-to]') : [];
+  var total = slides.length;
+  if (!total) return;
+
+  var currentIndex = 0;
+  var timer = null;
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function showSlide(index) {
+    currentIndex = (index + total) % total;
+    for (var i = 0; i < total; i++) {
+      var isActive = i === currentIndex;
+      slides[i].hidden = !isActive;
+      slides[i].classList.toggle('is-active', isActive);
+      if (dots[i]) {
+        dots[i].classList.toggle('is-active', isActive);
+        if (isActive) {
+          dots[i].setAttribute('aria-current', 'true');
+        } else {
+          dots[i].removeAttribute('aria-current');
+        }
+      }
+    }
+  }
+
+  function stopAutoPlay() {
+    if (timer !== null) {
+      window.clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  function startAutoPlay() {
+    if (reducedMotion.matches || document.hidden || timer !== null) return;
+    timer = window.setInterval(function () {
+      showSlide(currentIndex + 1);
+    }, 4500);
+  }
+
+  prevBtn.addEventListener('click', function () {
+    showSlide(currentIndex - 1);
+  });
+
+  nextBtn.addEventListener('click', function () {
+    showSlide(currentIndex + 1);
+  });
+
+  if (dotsContainer) {
+    dotsContainer.addEventListener('click', function (event) {
+      var dot = event.target.closest('[data-slide-to]');
+      if (!dot) return;
+      var targetIndex = parseInt(dot.getAttribute('data-slide-to'), 10);
+      if (!isNaN(targetIndex)) {
+        showSlide(targetIndex);
+      }
+    });
+  }
+
+  carousel.addEventListener('mouseenter', stopAutoPlay);
+  carousel.addEventListener('mouseleave', startAutoPlay);
+  carousel.addEventListener('focusin', stopAutoPlay);
+  carousel.addEventListener('focusout', function (event) {
+    if (!carousel.contains(event.relatedTarget)) {
+      startAutoPlay();
+    }
+  });
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  reducedMotion.addEventListener('change', function () {
+    if (reducedMotion.matches) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  showSlide(0);
+  startAutoPlay();
 })();
 
 (function initializeTodayPanel() {
@@ -50,7 +202,6 @@
     var minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
     var todayHours = OPENING_HOURS[day];
 
-    // The bakery opens at the opening minute and closes at the closing minute.
     if (todayHours && minutes < todayHours[0] * 60) {
       return { kind: 'before', day: day, opens: todayHours[0] };
     }
@@ -202,6 +353,261 @@
 
   update();
   startUpdates();
+})();
+
+(function initializeFormsAndAutofill() {
+  var STORAGE_KEY = 'corner_loaf_customer';
+  var preorderName = document.getElementById('preorder-name');
+  var preorderContact = document.getElementById('preorder-contact');
+  var contactName = document.getElementById('contact-name');
+  var contactEmail = document.getElementById('contact-email');
+
+  function loadSavedCustomer() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveCustomer(patch) {
+    try {
+      var current = loadSavedCustomer();
+      var next = {
+        name: patch.name !== undefined ? patch.name : (current.name || ''),
+        tel: patch.tel !== undefined ? patch.tel : (current.tel || ''),
+        email: patch.email !== undefined ? patch.email : (current.email || '')
+      };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      return next;
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function applySavedAutofill() {
+    var saved = loadSavedCustomer();
+    if (saved.name) {
+      if (preorderName && !preorderName.value) preorderName.value = saved.name;
+      if (contactName && !contactName.value) contactName.value = saved.name;
+    }
+    if (saved.tel && preorderContact && !preorderContact.value) {
+      preorderContact.value = saved.tel;
+    }
+    if (saved.email && contactEmail && !contactEmail.value) {
+      contactEmail.value = saved.email;
+    }
+  }
+
+  if (preorderName && contactName) {
+    preorderName.addEventListener('change', function () {
+      var val = preorderName.value.trim();
+      if (val) {
+        saveCustomer({ name: val });
+        if (!contactName.value) contactName.value = val;
+      }
+    });
+    contactName.addEventListener('change', function () {
+      var val = contactName.value.trim();
+      if (val) {
+        saveCustomer({ name: val });
+        if (!preorderName.value) preorderName.value = val;
+      }
+    });
+  }
+
+  if (preorderContact) {
+    preorderContact.addEventListener('change', function () {
+      var val = preorderContact.value.trim();
+      if (val) saveCustomer({ tel: val });
+    });
+  }
+
+  if (contactEmail) {
+    contactEmail.addEventListener('change', function () {
+      var val = contactEmail.value.trim();
+      if (val) saveCustomer({ email: val });
+    });
+  }
+
+  // Pre-order form
+  var preorderForm = document.getElementById('preorder-form');
+  var itemSelect = document.getElementById('preorder-item');
+  var quantityInput = document.getElementById('preorder-quantity');
+  var daySelect = document.getElementById('preorder-day');
+  var preorderStatus = document.getElementById('preorder-status');
+  var resultsBox = document.getElementById('preorder-results');
+  var list = document.getElementById('preorder-list');
+
+  if (preorderForm && daySelect && itemSelect) {
+    var DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    function populateCollectionDays() {
+      var now = new Date();
+      var fragment = document.createDocumentFragment();
+      var placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Select collection date';
+      fragment.appendChild(placeholder);
+
+      for (var offset = 1; offset <= 7; offset++) {
+        var target = new Date(Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate() + offset
+        ));
+        var dayIndex = target.getUTCDay();
+        if (dayIndex === 0) continue; // Closed on Sunday
+
+        var dayName = DAY_NAMES[dayIndex];
+        var dateLabel = target.getUTCDate() + ' ' + MONTHS[target.getUTCMonth()];
+        var relativeLabel = offset === 1 ? 'Tomorrow' : 'in ' + offset + ' days';
+        var option = document.createElement('option');
+        option.value = dayName + ', ' + dateLabel;
+        option.setAttribute('data-day-id', DAY_IDS[dayIndex]);
+        option.textContent = dayName + ', ' + dateLabel + ' (' + relativeLabel + ')';
+        fragment.appendChild(option);
+      }
+
+      daySelect.replaceChildren(fragment);
+    }
+
+    populateCollectionDays();
+
+    var preorderFields = [itemSelect, quantityInput, daySelect, preorderName, preorderContact];
+    preorderFields.forEach(function (field) {
+      if (!field) return;
+      field.addEventListener('input', function () {
+        field.removeAttribute('aria-invalid');
+      });
+      field.addEventListener('change', function () {
+        field.removeAttribute('aria-invalid');
+      });
+    });
+
+    preorderForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var itemVal = itemSelect.value.trim();
+      var qtyVal = parseInt(quantityInput.value, 10);
+      var dayVal = daySelect.value.trim();
+      var nameVal = preorderName.value.trim();
+      var contactVal = preorderContact.value.trim();
+
+      preorderFields.forEach(function (field) {
+        if (field) field.removeAttribute('aria-invalid');
+      });
+
+      if (!itemVal) {
+        itemSelect.setAttribute('aria-invalid', 'true');
+        preorderStatus.className = 'form-status is-error';
+        preorderStatus.textContent = 'Please select a bakery item to pre-order.';
+        itemSelect.focus();
+        return;
+      }
+      if (!qtyVal || qtyVal < 1) {
+        quantityInput.setAttribute('aria-invalid', 'true');
+        preorderStatus.className = 'form-status is-error';
+        preorderStatus.textContent = 'Please enter a quantity of 1 or more.';
+        quantityInput.focus();
+        return;
+      }
+      if (!dayVal) {
+        daySelect.setAttribute('aria-invalid', 'true');
+        preorderStatus.className = 'form-status is-error';
+        preorderStatus.textContent = 'Please select a collection date.';
+        daySelect.focus();
+        return;
+      }
+      if (!nameVal) {
+        preorderName.setAttribute('aria-invalid', 'true');
+        preorderStatus.className = 'form-status is-error';
+        preorderStatus.textContent = 'Please enter your name so we can label your order.';
+        preorderName.focus();
+        return;
+      }
+      if (!contactVal) {
+        preorderContact.setAttribute('aria-invalid', 'true');
+        preorderStatus.className = 'form-status is-error';
+        preorderStatus.textContent = 'Please enter a phone number so we can confirm your order.';
+        preorderContact.focus();
+        return;
+      }
+
+      saveCustomer({ name: nameVal, tel: contactVal });
+
+      var entry = document.createElement('li');
+      entry.textContent = nameVal + ' (' + contactVal + ') — ' + qtyVal + ' × ' + itemVal + ' for ' + dayVal;
+      list.appendChild(entry);
+      resultsBox.hidden = false;
+
+      preorderStatus.className = 'form-status is-success';
+      preorderStatus.textContent = 'Pre-order received for ' + nameVal + ': ' + qtyVal + ' × ' + itemVal + ' on ' + dayVal + '. We will be in touch to confirm your collection time.';
+      itemSelect.value = '';
+      daySelect.value = '';
+      quantityInput.value = '1';
+      applySavedAutofill();
+    });
+  }
+
+  // Contact form
+  var contactForm = document.getElementById('contact-form');
+  var messageInput = document.getElementById('contact-message');
+  var contactStatus = document.getElementById('contact-status');
+
+  if (contactForm && contactName && contactEmail && messageInput && contactStatus) {
+    var contactFields = [contactName, contactEmail, messageInput];
+    contactFields.forEach(function (field) {
+      field.addEventListener('input', function () {
+        field.removeAttribute('aria-invalid');
+      });
+    });
+
+    contactForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var nameVal = contactName.value.trim();
+      var emailVal = contactEmail.value.trim();
+      var messageVal = messageInput.value.trim();
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      contactFields.forEach(function (field) {
+        field.removeAttribute('aria-invalid');
+      });
+
+      if (!nameVal) {
+        contactName.setAttribute('aria-invalid', 'true');
+        contactStatus.className = 'form-status is-error';
+        contactStatus.textContent = 'Please enter your name.';
+        contactName.focus();
+        return;
+      }
+      if (!emailVal || !emailPattern.test(emailVal)) {
+        contactEmail.setAttribute('aria-invalid', 'true');
+        contactStatus.className = 'form-status is-error';
+        contactStatus.textContent = 'Please enter a valid email address (for example, kofi@email.com).';
+        contactEmail.focus();
+        return;
+      }
+      if (!messageVal) {
+        messageInput.setAttribute('aria-invalid', 'true');
+        contactStatus.className = 'form-status is-error';
+        contactStatus.textContent = 'Please enter your message before sending.';
+        messageInput.focus();
+        return;
+      }
+
+      saveCustomer({ name: nameVal, email: emailVal });
+
+      contactStatus.className = 'form-status is-success';
+      contactStatus.textContent = 'Thank you, ' + nameVal + '. Your message has been sent and we will reply to ' + emailVal + ' soon.';
+      messageInput.value = '';
+      applySavedAutofill();
+    });
+  }
+
+  applySavedAutofill();
 })();
 
 (function resetScrollOnRefresh() {
