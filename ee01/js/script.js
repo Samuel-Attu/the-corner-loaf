@@ -493,13 +493,32 @@
     var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+    function isBakedOnDay(itemValue, dayId) {
+      if (!itemValue) return true;
+      var section = document.getElementById(dayId);
+      if (!section) return true;
+      var names = section.querySelectorAll('.menu-list .name');
+      if (!names.length) return false;
+      var cleanItem = itemValue.split(' (')[0].trim().toLowerCase();
+      for (var i = 0; i < names.length; i++) {
+        if (names[i].textContent.trim().toLowerCase() === cleanItem) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function populateCollectionDays() {
+      var selectedItem = itemSelect.value.trim();
+      var previousDay = daySelect.value;
       var now = new Date();
       var fragment = document.createDocumentFragment();
       var placeholder = document.createElement('option');
       placeholder.value = '';
       placeholder.textContent = 'Select collection date';
       fragment.appendChild(placeholder);
+
+      var hasPreviousDay = false;
 
       for (var offset = 1; offset <= 7; offset++) {
         var target = new Date(Date.UTC(
@@ -509,21 +528,30 @@
         ));
         var dayIndex = target.getUTCDay();
         if (dayIndex === 0) continue; // Closed on Sunday
+        if (!isBakedOnDay(selectedItem, DAY_IDS[dayIndex])) continue;
 
         var dayName = DAY_NAMES[dayIndex];
         var dateLabel = target.getUTCDate() + ' ' + MONTHS[target.getUTCMonth()];
         var relativeLabel = offset === 1 ? 'Tomorrow' : 'in ' + offset + ' days';
+        var optionValue = dayName + ', ' + dateLabel;
         var option = document.createElement('option');
-        option.value = dayName + ', ' + dateLabel;
+        option.value = optionValue;
         option.setAttribute('data-day-id', DAY_IDS[dayIndex]);
         option.textContent = dayName + ', ' + dateLabel + ' (' + relativeLabel + ')';
+        if (optionValue === previousDay) {
+          hasPreviousDay = true;
+        }
         fragment.appendChild(option);
       }
 
       daySelect.replaceChildren(fragment);
+      if (hasPreviousDay) {
+        daySelect.value = previousDay;
+      }
     }
 
     populateCollectionDays();
+    itemSelect.addEventListener('change', populateCollectionDays);
 
     var preorderFields = [itemSelect, quantityInput, daySelect, preorderName, preorderContact];
     preorderFields.forEach(function (field) {
@@ -594,6 +622,7 @@
       preorderStatus.className = 'form-status is-success';
       preorderStatus.textContent = 'Pre-order received for ' + nameVal + ': ' + qtyVal + ' × ' + itemVal + ' on ' + dayVal + '. We will be in touch to confirm your collection time.';
       itemSelect.value = '';
+      populateCollectionDays();
       daySelect.value = '';
       quantityInput.value = '1';
       applySavedAutofill();
