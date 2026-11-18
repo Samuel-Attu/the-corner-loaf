@@ -77,6 +77,16 @@
     }
   });
 
+  navigation.addEventListener('keydown', function (event) {
+    if (event.key === ' ' || event.key === 'Spacebar') {
+      var link = event.target.closest('a');
+      if (link) {
+        event.preventDefault();
+        link.click();
+      }
+    }
+  });
+
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape') {
       closeMobileMenu(true);
@@ -103,6 +113,10 @@
   var currentIndex = 0;
   var timer = null;
   var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // Autoplay pauses only while a mouse is over the carousel or a keyboard
+  // user has focus inside it. Taps and clicks never pause it.
+  var pausedByHover = false;
+  var pausedByFocus = false;
 
   function showSlide(index) {
     currentIndex = (index + total) % total;
@@ -130,17 +144,36 @@
 
   function startAutoPlay() {
     if (reducedMotion.matches || document.hidden || timer !== null) return;
+    if (pausedByHover || pausedByFocus) return;
     timer = window.setInterval(function () {
       showSlide(currentIndex + 1);
     }, 4500);
   }
 
+  // After a manual change, give the new slide a full interval before advancing.
+  function restartAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  // Mouse clicks and taps do not match :focus-visible; keyboard focus does.
+  // Browsers without :focus-visible fall back to pausing on any focus.
+  function isKeyboardFocus(element) {
+    try {
+      return element.matches(':focus-visible');
+    } catch (error) {
+      return true;
+    }
+  }
+
   prevBtn.addEventListener('click', function () {
     showSlide(currentIndex - 1);
+    restartAutoPlay();
   });
 
   nextBtn.addEventListener('click', function () {
     showSlide(currentIndex + 1);
+    restartAutoPlay();
   });
 
   if (dotsContainer) {
@@ -150,15 +183,30 @@
       var targetIndex = parseInt(dot.getAttribute('data-slide-to'), 10);
       if (!isNaN(targetIndex)) {
         showSlide(targetIndex);
+        restartAutoPlay();
       }
     });
   }
 
-  carousel.addEventListener('mouseenter', stopAutoPlay);
-  carousel.addEventListener('mouseleave', startAutoPlay);
-  carousel.addEventListener('focusin', stopAutoPlay);
+  // pointerType filters out the fake mouse events touch screens send on tap.
+  carousel.addEventListener('pointerenter', function (event) {
+    if (event.pointerType !== 'mouse') return;
+    pausedByHover = true;
+    stopAutoPlay();
+  });
+  carousel.addEventListener('pointerleave', function (event) {
+    if (event.pointerType !== 'mouse') return;
+    pausedByHover = false;
+    startAutoPlay();
+  });
+  carousel.addEventListener('focusin', function (event) {
+    if (!isKeyboardFocus(event.target)) return;
+    pausedByFocus = true;
+    stopAutoPlay();
+  });
   carousel.addEventListener('focusout', function (event) {
     if (!carousel.contains(event.relatedTarget)) {
+      pausedByFocus = false;
       startAutoPlay();
     }
   });
