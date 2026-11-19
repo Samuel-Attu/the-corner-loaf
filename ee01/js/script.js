@@ -707,3 +707,56 @@
     });
   });
 })();
+
+(function initializeScrollToTop() {
+  var scrollTopBtn = document.getElementById('scroll-top-btn');
+  var footer = document.querySelector('.site-footer');
+  if (!scrollTopBtn) return;
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var isShown = false;
+
+  function updateScrollTopVisibility() {
+    var shouldShow = window.scrollY > 320;
+    if (shouldShow !== isShown) {
+      isShown = shouldShow;
+      if (shouldShow) {
+        scrollTopBtn.hidden = false;
+        window.requestAnimationFrame(function () {
+          scrollTopBtn.classList.add('is-visible');
+        });
+      } else {
+        scrollTopBtn.classList.remove('is-visible');
+        scrollTopBtn.hidden = true;
+      }
+    }
+
+    if (shouldShow && footer) {
+      var footerRect = footer.getBoundingClientRect();
+      var overlap = window.innerHeight - footerRect.top;
+      if (overlap > 0) {
+        scrollTopBtn.style.bottom = (overlap + 12) + 'px';
+      } else {
+        scrollTopBtn.style.bottom = '';
+      }
+    }
+  }
+
+  scrollTopBtn.addEventListener('click', function () {
+    window.scrollTo({
+      top: 0,
+      behavior: reducedMotion.matches ? 'auto' : 'smooth'
+    });
+    if (window.location.hash) {
+      window.history.replaceState(
+        window.history.state,
+        '',
+        window.location.pathname + window.location.search
+      );
+    }
+  });
+
+  window.addEventListener('scroll', updateScrollTopVisibility, { passive: true });
+  window.addEventListener('resize', updateScrollTopVisibility);
+  updateScrollTopVisibility();
+})();
