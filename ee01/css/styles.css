@@ -29,6 +29,8 @@
   /* accessible error accent (8.4:1 on flour) */
   --shadow: rgb(46 29 18 / 12%);
   /* navigation dropdown shadow */
+  --badge-bg: rgb(46 29 18 / 86%);
+  /* carousel slide badge surface */
 
   /* Type: Poppins (loaded via Google Fonts in index.html with system-ui fallback), scale of 1.25 from 16px */
   --font: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -78,6 +80,7 @@ html {
   .btn,
   .carousel-btn,
   .carousel-dot,
+  .carousel-dot::before,
   .carousel-slide img,
   .scroll-top-btn,
   [data-reveal] {
@@ -702,7 +705,7 @@ section {
   z-index: 2;
   padding: 0.25rem 0.65rem;
   border-radius: 999px;
-  background: rgb(46 29 18 / 86%);
+  background: var(--badge-bg);
   color: var(--wheat);
   font-size: 0.75rem;
   font-weight: 600;
