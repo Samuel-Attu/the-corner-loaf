@@ -131,8 +131,29 @@
     }
   });
 
+  /** @type {number | null} */
+  var resizeRafId = null;
+
+  /**
+   * Throttles `syncHeaderOffset` to one layout read per animation frame on resize.
+   * @returns {void}
+   */
+  function scheduleHeaderOffsetSync() {
+    if (resizeRafId !== null) return;
+    resizeRafId = window.requestAnimationFrame(function () {
+      resizeRafId = null;
+      syncHeaderOffset();
+    });
+  }
+
   mobileNavigation.addEventListener('change', setNavigationMode);
-  window.addEventListener('resize', syncHeaderOffset);
+  window.addEventListener('resize', scheduleHeaderOffsetSync, { passive: true });
+  window.addEventListener('pagehide', function () {
+    if (resizeRafId !== null) {
+      window.cancelAnimationFrame(resizeRafId);
+      resizeRafId = null;
+    }
+  });
   setNavigationMode();
 })();
 
@@ -182,8 +203,10 @@
     currentIndex = (index + total) % total;
     for (var i = 0; i < total; i++) {
       var isActive = i === currentIndex;
-      slides[i].hidden = !isActive;
       slides[i].classList.toggle('is-active', isActive);
+      slides[i].classList.toggle('is-inactive', !isActive);
+      slides[i].setAttribute('aria-hidden', String(!isActive));
+      slides[i].inert = !isActive;
       if (dots[i]) {
         dots[i].classList.toggle('is-active', isActive);
         if (isActive) {
@@ -840,6 +863,13 @@
   applySavedAutofill();
 })();
 
+/**
+ * Intentional trade-off (retained despite peer audit Finding 6):
+ * On an explicit browser reload, returns walk-by visitors to the top of the page
+ * so they immediately see the refreshed open/closed status banner (#today-panel)
+ * instead of staying scrolled in a static lower section. Standard in-page hash
+ * navigation remains unaffected during the session.
+ */
 (function resetScrollOnRefresh() {
   var navigationEntry = /** @type {PerformanceNavigationTiming | undefined} */ (
     performance.getEntriesByType('navigation')[0]

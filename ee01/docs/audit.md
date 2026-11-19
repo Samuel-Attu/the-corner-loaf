@@ -31,7 +31,7 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 
 ## Automated checks
 
-- Lighthouse (mobile, run through Live Server): Performance 99, Accessibility 100, Best Practices 100, SEO 100. axe DevTools (WCAG 2.1 AA) found 0 issues.
+- Lighthouse (EE01 baseline mobile run on local Live Server; see `ee02/docs/write-up.md` for EE02 verification and screen-reader testing on the live deployment): Performance 99, Accessibility 100, Best Practices 100, SEO 100. axe DevTools (WCAG 2.1 AA) found 0 issues.
 
 <img src="screenshots/lighthouse-results.png" alt="Lighthouse test results" width="300">
 
@@ -41,7 +41,7 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 
 ## Visual consistency
 
-- The palette, type sizes and most spacing values use tokens. Some component-specific values remain literal, including the menu icon's 4px gap and the navigation shadow's dimensions. I found six hard-coded colours in the open/closed status box and replaced them with tokens, and the status states now differ only by the colour of the left edge and the words.
+- The palette, type sizes and spacing values use tokens (with the navigation dropdown shadow offset as a component-specific literal). I found six hard-coded colours in the open/closed status box and replaced them with tokens, and the status states now differ only by the colour of the left edge and the words.
 - The menu toggle radius now uses the 6px token. The one deliberate exception is the pill shape on the order buttons, which separates them from the main buttons.
 - The FAQ answers use Poppins 400 italic, which is now loaded, so the browser no longer fakes the italic.
 

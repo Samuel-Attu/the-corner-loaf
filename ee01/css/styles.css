@@ -331,7 +331,7 @@ section {
 
 .menu-icon {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .menu-icon span {
@@ -634,7 +634,7 @@ section {
 
 @media (scripting: enabled) {
   .today {
-    min-height: 18rem;
+    min-height: 18em;
   }
 }
 
@@ -656,7 +656,7 @@ section {
   display: grid;
   background: var(--kraft-tint);
   border: 1px solid var(--kraft);
-  border-radius: 10px;
+  border-radius: var(--radius);
   box-shadow: 0 0.75rem 1.75rem var(--shadow);
   overflow: hidden;
 }
@@ -669,11 +669,11 @@ section {
   animation: slideFadeIn 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Keep inactive slides in the same grid cell with visibility: hidden so the
-   stage always reserves the height of the tallest slide without shifting
-   content below, while hiding inactive slides from screen readers and Tab. */
-.carousel-slide[hidden] {
-  display: flex;
+/* Keep inactive slides in the same grid cell via a dedicated class (paired with
+   aria-hidden="true" and inert in HTML/JS) rather than overriding native [hidden],
+   so the stage reserves the tallest slide height while keeping inactive slides
+   completely out of the accessibility tree and keyboard Tab order. */
+.carousel-slide.is-inactive {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -703,11 +703,11 @@ section {
   top: var(--space-3);
   left: var(--space-3);
   z-index: 2;
-  padding: 0.25rem 0.65rem;
+  padding: var(--space-1) var(--space-3);
   border-radius: 999px;
   background: var(--badge-bg);
   color: var(--wheat);
-  font-size: 0.75rem;
+  font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.02em;
 }
