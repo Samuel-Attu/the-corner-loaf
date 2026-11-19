@@ -39,7 +39,7 @@
     </div>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
 
     <section class="intro" id="today" aria-labelledby="intro-title">
       <div class="wrap">
@@ -67,7 +67,8 @@
           <aside class="bake-gallery" id="bake-carousel" aria-roledescription="carousel"
             aria-label="Signature bakes from our oven" data-reveal>
             <div class="carousel-stage" aria-live="off">
-              <figure class="carousel-slide is-active" data-slide>
+              <figure class="carousel-slide is-active" data-slide role="group" aria-roledescription="slide"
+                aria-label="1 of 6">
                 <div class="slide-media">
                   <span class="slide-badge">Baked Tue &amp; Fri</span>
                   <img src="images/sourdough-loaf.webp" alt="Crusty round sourdough loaf cooling on a wire rack"
@@ -83,7 +84,8 @@
                 </figcaption>
               </figure>
 
-              <figure class="carousel-slide" data-slide hidden>
+              <figure class="carousel-slide" data-slide role="group" aria-roledescription="slide" aria-label="2 of 6"
+                hidden>
                 <div class="slide-media">
                   <span class="slide-badge">Baked Mon, Wed &amp; Fri</span>
                   <img src="images/whole-wheat-loaf.webp"
@@ -100,7 +102,8 @@
                 </figcaption>
               </figure>
 
-              <figure class="carousel-slide" data-slide hidden>
+              <figure class="carousel-slide" data-slide role="group" aria-roledescription="slide" aria-label="3 of 6"
+                hidden>
                 <div class="slide-media">
                   <span class="slide-badge">Baked Every Day</span>
                   <img src="images/chin-chin.webp" alt="Crunchy golden-fried chin chin pastry strips in a white bowl"
@@ -116,7 +119,8 @@
                 </figcaption>
               </figure>
 
-              <figure class="carousel-slide" data-slide hidden>
+              <figure class="carousel-slide" data-slide role="group" aria-roledescription="slide" aria-label="4 of 6"
+                hidden>
                 <div class="slide-media">
                   <span class="slide-badge">Baked Sat Morning</span>
                   <img src="images/butter-croissants.webp" alt="Flaky golden-brown butter croissant" width="480"
@@ -132,7 +136,8 @@
                 </figcaption>
               </figure>
 
-              <figure class="carousel-slide" data-slide hidden>
+              <figure class="carousel-slide" data-slide role="group" aria-roledescription="slide" aria-label="5 of 6"
+                hidden>
                 <div class="slide-media">
                   <span class="slide-badge">Baked Thu &amp; Sat</span>
                   <img src="images/banana-bread.webp" alt="Sliced homemade banana bread loaf on a wooden board"
@@ -148,7 +153,8 @@
                 </figcaption>
               </figure>
 
-              <figure class="carousel-slide" data-slide hidden>
+              <figure class="carousel-slide" data-slide role="group" aria-roledescription="slide" aria-label="6 of 6"
+                hidden>
                 <div class="slide-media">
                   <span class="slide-badge">Baked Wed &amp; Fri</span>
                   <img src="images/meat-pies.webp" alt="Golden baked short-crust meat pie with crimped edges"
@@ -170,6 +176,18 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
                   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <button class="carousel-btn" id="carousel-toggle" type="button" aria-label="Pause slide rotation"
+                aria-pressed="false">
+                <svg class="icon-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                  aria-hidden="true">
+                  <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                  <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                </svg>
+                <svg class="icon-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                  aria-hidden="true" hidden>
+                  <polygon points="6 4 20 12 6 20 6 4"></polygon>
                 </svg>
               </button>
               <div class="carousel-dots" id="carousel-dots" role="group" aria-label="Choose a bake slide">
@@ -385,12 +403,12 @@
                 <label for="preorder-item">Bakery item <span class="req">(required)</span></label>
                 <select class="form-control" id="preorder-item" name="item" required>
                   <option value="">Select a bake</option>
-                  <option value="Sourdough loaf (35 Ghana cedis)">Sourdough loaf — GH₵ 35</option>
-                  <option value="Whole wheat loaf (28 Ghana cedis)">Whole wheat loaf — GH₵ 28</option>
-                  <option value="Chin chin (20 Ghana cedis)">Chin chin — GH₵ 20</option>
-                  <option value="Butter croissants (18 Ghana cedis)">Butter croissants — GH₵ 18</option>
-                  <option value="Banana bread (15 Ghana cedis a slice)">Banana bread — GH₵ 15 a slice</option>
-                  <option value="Meat pies (12 Ghana cedis)">Meat pies — GH₵ 12</option>
+                  <option value="Sourdough loaf (35 Ghana cedis)">Sourdough loaf — 35 Ghana cedis</option>
+                  <option value="Whole wheat loaf (28 Ghana cedis)">Whole wheat loaf — 28 Ghana cedis</option>
+                  <option value="Chin chin (20 Ghana cedis)">Chin chin — 20 Ghana cedis</option>
+                  <option value="Butter croissants (18 Ghana cedis)">Butter croissants — 18 Ghana cedis</option>
+                  <option value="Banana bread (15 Ghana cedis a slice)">Banana bread — 15 Ghana cedis a slice</option>
+                  <option value="Meat pies (12 Ghana cedis)">Meat pies — 12 Ghana cedis</option>
                 </select>
               </div>
 

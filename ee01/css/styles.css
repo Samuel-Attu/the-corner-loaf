@@ -26,11 +26,11 @@
   --open: #2f6b3a;
   /* "open now" dot, always paired with the word Open */
   --error: #8f1d14;
-  /* accessible error accent (7.2:1 on flour) */
+  /* accessible error accent (8.4:1 on flour) */
   --shadow: rgb(46 29 18 / 12%);
   /* navigation dropdown shadow */
 
-  /* Type: Poppins, scale of 1.25 from 16px */
+  /* Type: Poppins (loaded via Google Fonts in index.html with system-ui fallback), scale of 1.25 from 16px */
   --font: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
   --step--1: 0.8rem;
   --step-0: 1rem;
@@ -163,6 +163,10 @@ a:hover {
   outline-offset: 2px;
 }
 
+#main:focus:not(:focus-visible) {
+  outline: none;
+}
+
 .skip-link {
   position: absolute;
   z-index: 20;
@@ -258,7 +262,7 @@ section {
   align-items: center;
   min-width: 0;
   min-height: var(--tap);
-  font-size: var(--step-1);
+  font-size: clamp(1rem, 0.9rem + 0.8vw, var(--step-1));
   font-weight: 600;
   line-height: 1.2;
   color: var(--ink);
@@ -635,17 +639,18 @@ section {
 .bake-gallery {
   min-width: 0;
   width: min(100%, 26rem);
-  margin-top: var(--space-2);
+  margin: var(--space-2) auto 0;
 }
 
 @media (min-width: 52rem) {
   .bake-gallery {
-    margin-top: 0;
+    margin: 0;
   }
 }
 
 .carousel-stage {
   position: relative;
+  display: grid;
   background: var(--kraft-tint);
   border: 1px solid var(--kraft);
   border-radius: 10px;
@@ -654,12 +659,22 @@ section {
 }
 
 .carousel-slide {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   animation: slideFadeIn 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* Keep inactive slides in the same grid cell with visibility: hidden so the
+   stage always reserves the height of the tallest slide without shifting
+   content below, while hiding inactive slides from screen readers and Tab. */
 .carousel-slide[hidden] {
-  display: none;
+  display: flex;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  animation: none;
 }
 
 @keyframes slideFadeIn {
@@ -708,7 +723,9 @@ section {
 }
 
 .carousel-slide figcaption {
+  flex: 1;
   display: grid;
+  align-content: start;
   gap: var(--space-1);
   padding: var(--space-4);
   border-top: 1px solid var(--kraft);
@@ -759,8 +776,8 @@ section {
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--tap);
+  height: var(--tap);
   padding: 0;
   border: 1px solid var(--kraft);
   border-radius: 999px;
@@ -768,6 +785,10 @@ section {
   color: var(--crust);
   cursor: pointer;
   transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.carousel-btn svg[hidden] {
+  display: none;
 }
 
 /* Only on devices that can really hover. On touch screens :hover sticks to
@@ -793,33 +814,45 @@ section {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
+  gap: 0.15rem;
 }
 
 .carousel-dot {
-  width: 0.55rem;
-  height: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
   padding: 0;
-  border: 1px solid var(--crust);
+  border: 0;
   border-radius: 999px;
   background: transparent;
   cursor: pointer;
+}
+
+.carousel-dot::before {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--crust);
+  border-radius: 999px;
+  background: transparent;
+  content: "";
   transition: width 0.22s ease, background-color 0.22s ease;
 }
 
-.carousel-dot.is-active {
+.carousel-dot.is-active::before {
   width: 1.4rem;
   background: var(--crust);
 }
 
-/* Prev/next buttons plus all six dots need about 13rem. When the row is
-   narrower than that (small screen and large text), drop the dots so the
-   buttons stay on one line instead of wrapping. Prev/next still work. */
+/* Prev, pause/play, next buttons plus six 24px dots need ~19.5rem.
+   When the row is narrower (small screen + large text), drop the dots so
+   the primary controls stay on one line without wrapping. */
 .carousel-controls {
   container-type: inline-size;
 }
 
-@container (max-width: 13.25rem) {
+@container (max-width: 19.5rem) {
   .carousel-dots {
     display: none;
   }
@@ -1100,7 +1133,7 @@ textarea.form-control {
 .form-submit {
   justify-self: start;
   margin-top: var(--space-1);
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
 .form-status {
