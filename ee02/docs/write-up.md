@@ -13,6 +13,10 @@
 - **Why this fixes the cause, not just the symptom:** Allowing both `.menu-list li` and `.item-copy` to wrap while keeping `.order-link` compact means the price drops cleanly onto a second line below the item name whenever text is enlarged or the viewport narrows, preventing `.name`, `.price`, and `.order-link` from ever colliding.
 - **How I verified it:** Tested at `320px` width (both default text size and *Very large* font scaling), `390px` mobile width, and `1280px` desktop width. Confirmed `0` bounding-box overlaps across all 16 menu rows and `0` right-edge overflows (`maxRight = 292.19px <= 305px` inner width at `320px`).
 
+  | Before (flagged in peer audit) | After (fixed at 320px, Very large 24px font) |
+  | :---: | :---: |
+  | ![Before fix: Sourdough loaf and Whole wheat loaf colliding with GH₵ prices at 320px with Very large text](screenshots/before-finding1-price-overlap.png) | ![After fix: Whole wheat loaf, Chin chin, and Sourdough loaf wrapping cleanly with zero price overlap at 320px with Very large 24px font](screenshots/after-finding1-menu-320.png) |
+
 ### Finding 2: Jumping to a day's menu lands with the heading hidden behind the header
 
 - **Reproduced before fixing:** Yes. Activating the *"View today's menu and pre-order"* link inside `#today-panel` (or an in-page day link) scrolled the page so the target day's `<h3>` heading (`Monday`, `Thursday`, etc.) sat underneath the `position: sticky` header.
@@ -21,13 +25,17 @@
 - **Why this fixes the cause, not just the symptom:** Binding the scroll offset to a CSS custom property that defaults to `4.75rem` without JS and dynamically tracks the rendered `.site-header` height ensures every in-page anchor target clears the sticky header across all viewport widths and font-size settings.
 - **How I verified it:** Activated `.today-more a` (`#thu`) at `320px` viewport width; verified `.site-header` bottom is at `y = 56px` while `#thu h3` lands at `y = 144.34px` (`+88.34px` clear of the header).
 
+  | Before (flagged in peer audit) | After (fixed at 320px) |
+  | :---: | :---: |
+  | ![Before fix: Monday heading hidden underneath the sticky header after activating an in-page day link](screenshots/before-finding2-heading-hidden.jpg) | ![After fix: Thursday heading landing clearly below the 56px sticky header after activating the View today's menu link](screenshots/after-finding2-heading-clear-320.png) |
+
 ### Finding 3: The contact section forces sideways scrolling when text is enlarged
 
 - **Reproduced before fixing:** Yes. At `320px` viewport width with browser font size set to *Very large*, the *Hours and contact* section overflowed horizontally and forced two-dimensional scrolling.
 - **Cause:** In `ee01/css/styles.css`, `.contact-grid` previously used `grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr))`. At Chrome's *Very large* font size (`24px` root), `15rem` equals `360px`—wider than the `320px` viewport. In addition, the column containers lacked `min-width: 0` and long unbroken strings like `thecornerloaf@email.com` lacked `overflow-wrap: anywhere`.
 - **What I changed:** In `ee01/css/styles.css`, replaced the `minmax(15rem, 1fr)` track with a mobile-first single-column grid (`grid-template-columns: minmax(0, 1fr)` on mobile, stepping up to `repeat(2, minmax(0, 1fr))` at `38rem` and `repeat(3, minmax(0, 1fr))` at `56rem`), added `.contact-col { min-width: 0; }`, and set `overflow-wrap: anywhere` on links (`a`) and `overflow-wrap: break-word` on headings, paragraphs, and `<address>`.
 - **Why this fixes the cause, not just the symptom:** Using `minmax(0, 1fr)` guarantees no grid track can ever exceed the viewport width regardless of root `rem` scaling, while `min-width: 0` and `overflow-wrap: anywhere` allow long email addresses and headings to wrap cleanly inside narrow columns.
-- **How I verified it:** Verified at `320px` viewport width that every section (`#contact`, `#menu`, `#pre-order`, `#about`, `.site-footer`) fits inside the viewport with zero horizontal scrolling.
+- **How I verified it:** Verified at `320px` viewport width (both default `16px` and Very large `24px` font sizes, `scrollWidth = 320px === innerWidth`) that every section (`#contact`, `#menu`, `#pre-order`, `#about`, `.site-footer`) fits inside the viewport with zero horizontal scrolling.
 
 ### Finding 4: The header breaks apart and half of it disappears when text is very large
 
@@ -35,7 +43,11 @@
 - **Cause:** In `ee01/css/styles.css`, `.header-inner` used `flex-wrap: wrap` with `column-gap: var(--space-6)` (`1.5rem`) and `.brand` had a fixed `var(--step-1)` (`1.25rem`) font size. At `320px` with `24px` root font size, the brand text, gap, and `2.75rem` toggle button exceeded the row width and pushed `.menu-toggle` onto a second line.
 - **What I changed:** In `ee01/css/styles.css`, set `.header-inner` at mobile widths (`@media (max-width: 44rem)`) to `flex-wrap: nowrap; gap: var(--space-2);`, gave `.brand` a fluid `font-size: clamp(1rem, 0.9rem + 0.8vw, var(--step-1)); min-width: 0; line-height: 1.2;`, and set `flex-shrink: 0` on `.menu-toggle`.
 - **Why this fixes the cause, not just the symptom:** Keeping `.header-inner` single-line (`nowrap`) on mobile while letting `.brand` scale fluidly prevents wrapping and keeps the sticky header compact at all font sizes.
-- **How I verified it:** Verified at `320px` width that `.brand` (`y: 4..48`) and `.menu-toggle` (`y: 4..48`) sit cleanly on one row with a compact `56px` total header height.
+- **How I verified it:** Verified at `320px` width that `.brand` and `.menu-toggle` sit cleanly on one row at both default (`16px` root, `y = 4px`, `56px` header) and Very large (`24px` root, `y = 6px`, `82px` header) font sizes.
+
+  | Before (Findings 3 & 4 in peer audit) | After (Findings 3 & 4 fixed at 320px, Very large 24px font) |
+  | :---: | :---: |
+  | ![Before fix: Sticky header wrapping the menu button onto a second line and Hours and contact forcing horizontal scroll at 320px](screenshots/before-finding3-4-header-contact-overflow.png) | ![After fix: Compact single-line sticky header above Hours and contact with zero horizontal overflow at 320px with Very large 24px font](screenshots/after-finding3-4-header-contact-320.png) |
 
 ### Finding 5: The mobile menu cannot be closed with the Escape key
 
@@ -52,6 +64,10 @@
 - **What I changed:** Removed the redundant `.day-jump` list and updated the `.lede` paragraph in `ee01/index.html` to read: *"We bake in small batches, and not everything is out every day. Here is what is on the shelf each day of the week."*
 - **Why this fixes the cause, not just the symptom:** Aligning the introductory copy with the actual layout removes the confusing instruction to look for a non-existent control while keeping the weekly schedule scannable on both mobile and desktop.
 - **How I verified it:** Checked *This week's bakes* across desktop (`1280px`) and mobile (`320px`) viewports and confirmed the copy accurately describes the visible schedule.
+
+  | Before (flagged in peer audit) | After (fixed on desktop) |
+  | :---: | :---: |
+  | ![Before fix: Desktop weekly menu reading Pick your day to see what is on the shelf with no day picker present](screenshots/before-finding7-pick-day-desktop.png) | ![After fix: Desktop weekly menu reading Here is what is on the shelf each day of the week above the 3-column schedule](screenshots/after-finding7-menu-desktop.png) |
 
 ### Finding 8: Prices are read out as letters: "G H Ghanaian cedi"
 
@@ -90,9 +106,14 @@
 - **The barrier they faced:**
   1. In my EE01 rebuild, replacing the broken original pre-order and contact forms entirely with WhatsApp links meant that anyone without WhatsApp had no way to place a pre-order or send a message directly on the website.
   2. The rebuilt page had no photos of the six signature bakes, forcing customers to decide from text names alone.
-
 - **Why it is worth doing for the business:** Marcus keeps the speed of one-tap WhatsApp pre-orders for mobile regulars while capturing orders and inquiries from customers who do not use WhatsApp. Filtering collection dates by each item's baking schedule and enforcing the one-day minimum lead time prevents invalid orders before they ever reach Marcus, and the compact carousel showcases all six signature bakes without pushing the weekly menu down the page.
 - **How I verified it:**
   - Verified desktop (`1280×900`) and narrow mobile (`320×700`) layouts with `0` console errors and `0` horizontal overflow.
   - Verified carousel controls (`#carousel-prev`, `#carousel-toggle`, `#carousel-next` all `44×44px`; all 6 `.carousel-dot` buttons `24×24px`), Pause/Play `aria-pressed` / `aria-label` toggling, slide transitions, and `prefers-reduced-motion` handling.
   - Verified keyboard-only validation and submission on both `#preorder-form` and `#contact-form`: confirmed `aria-invalid="true"`, `aria-describedby`, live `role="status"` announcements, automatic focus movement to invalid fields, schedule-filtered collection dates for *Sourdough loaf*, and live `#preorder-results` output.
+
+  | Before (EE01 desktop hero without photos) | After (EE02 hero with accessible bake carousel) |
+  | :---: | :---: |
+  | ![Before improvement: Desktop intro showing only the Today's bakes panel with empty space on the right](screenshots/before-hero-desktop.jpg) | ![After improvement: Desktop intro pairing Today's bakes with the single-box bake showcase carousel including Previous, Pause/Play, slide dots, and Next controls](screenshots/after-improvement-hero-desktop.png) |
+
+  ![After improvement: Accessible on-site Place a pre-order form with schedule-filtered collection dates alongside the Before you order FAQ](screenshots/after-improvement-preorder-desktop.png)
