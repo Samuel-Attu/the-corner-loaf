@@ -48,4 +48,4 @@ Marcus's constraints are a phone, a walk-by visitor, a one-man bakery with no ti
 ## Known gaps
 
 - The open or closed status comes from the weekly schedule. It cannot know if something has sold out, so it does not promise stock.
-- Automated tools only catch part of the accessibility problems, and I have not tested with a screen reader. The contrast figures above are calculated from the tokens, and the tools found no contrast failures.
+- Automated tools only catch part of the accessibility problems; during EE01 I had not yet tested with a screen reader *(subsequently completed in EE02 using Windows Narrator alongside peer NVDA testing — see `ee02/docs/write-up.md`)*. The contrast figures above are calculated from the tokens, and the tools found no contrast failures.

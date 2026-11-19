@@ -115,6 +115,7 @@
   - Verified desktop (`1280×900`) and narrow mobile (`320×700`) layouts with `0` console errors and `0` horizontal overflow.
   - Verified carousel controls (`#carousel-prev`, `#carousel-toggle`, `#carousel-next` all `44×44px`; all 6 `.carousel-dot` buttons `24×24px`), Pause/Play `aria-pressed` / `aria-label` toggling, slide transitions, `prefers-reduced-motion` handling, and Chrome's full accessibility tree (`Accessibility.getFullAXTree`) confirming `0` inactive slides are exposed.
   - Verified keyboard-only validation and submission on both `#preorder-form` and `#contact-form`: confirmed `aria-invalid="true"`, `aria-describedby`, live `role="status"` announcements, automatic focus movement to invalid fields, schedule-filtered collection dates for *Sourdough loaf*, and live `#preorder-results` output.
+  - Ran **Lighthouse 13.6.0 (mobile)** against the deployed GitHub Pages URL (`https://samuel-attu.github.io/the-corner-loaf/`): **Performance 96, Accessibility 100, Best Practices 100, SEO 100**.
 
   | Before (EE01 desktop hero without photos) | After (EE02 hero with accessible bake carousel) |
   | :---: | :---: |
